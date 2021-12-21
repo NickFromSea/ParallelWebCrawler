@@ -31,12 +31,22 @@ public final class WebCrawlerMain {
   @Inject
   private Profiler profiler;
 
-  private void run() throws Exception {
+  private void run()  {
     Guice.createInjector(new WebCrawlerModule(config), new ProfilerModule()).injectMembers(this);
 
     CrawlResult result = crawler.crawl(config.getStartPages());
     CrawlResultWriter resultWriter = new CrawlResultWriter(result);
     // TODO: Write the crawl results to a JSON file (or System.out if the file name is empty)
+    /*if (this.config.getResultPath().isEmpty()){
+      resultWriter.write(new OutputStreamWriter(System.out));
+    }else {
+      resultWriter.write(Path.of(this.config.getResultPath()));
+    }
+    if (this.config.getProfileOutputPath().isEmpty()){
+      profiler.writeData(new OutputStreamWriter(System.out));
+    }else {
+      profiler.writeData(Path.of(this.config.getProfileOutputPath()));
+    }*/
     if (config.getResultPath().isEmpty()||config.getResultPath().isBlank()){
       resultWriter.write(new OutputStreamWriter(System.out));
     }else {
