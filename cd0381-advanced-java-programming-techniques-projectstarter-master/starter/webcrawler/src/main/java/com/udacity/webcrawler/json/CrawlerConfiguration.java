@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * A data class that represents the configuration of a single web crawl.
  */
-@JsonDeserialize(builder = CrawlerConfiguration.Builder.class)//+++++
+//@JsonDeserialize(builder = CrawlerConfiguration.Builder.class)//+++++
 public final class CrawlerConfiguration {
 
   private final List<String> startPages;

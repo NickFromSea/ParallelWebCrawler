@@ -12,9 +12,11 @@ import com.udacity.webcrawler.profiler.ProfilerModule;
 
 import javax.inject.Inject;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 public final class WebCrawlerMain {
@@ -31,28 +33,34 @@ public final class WebCrawlerMain {
   @Inject
   private Profiler profiler;
 
-  private void run()  {
+  private void run() throws IOException {
     Guice.createInjector(new WebCrawlerModule(config), new ProfilerModule()).injectMembers(this);
 
     CrawlResult result = crawler.crawl(config.getStartPages());
     CrawlResultWriter resultWriter = new CrawlResultWriter(result);
     // TODO: Write the crawl results to a JSON file (or System.out if the file name is empty)
-    /*if (this.config.getResultPath().isEmpty()){
+    if (config.getResultPath().isEmpty()){
+      System.out.println("\nResult not found ");
       resultWriter.write(new OutputStreamWriter(System.out));
     }else {
-      resultWriter.write(Path.of(this.config.getResultPath()));
-    }
-    if (this.config.getProfileOutputPath().isEmpty()){
-      profiler.writeData(new OutputStreamWriter(System.out));
-    }else {
-      profiler.writeData(Path.of(this.config.getProfileOutputPath()));
-    }*/
-    if (config.getResultPath().isEmpty()||config.getResultPath().isBlank()){
-      resultWriter.write(new OutputStreamWriter(System.out));
-    }else {
-      resultWriter.write(Path.of(config.getResultPath()));
+      Path resPath = Path.of(config.getResultPath());
+      System.out.println("\nResult - " +resPath);
+      resultWriter.write(resPath);
     }
     // TODO: Write the profile data to a text file (or System.out if the file name is empty)
+    if (config.getResultPath().isEmpty()){
+      /*Path path = Paths.get(config.getResultPath());
+      resultWriter.write(path);*/
+      System.out.println("\nOutput Path not found ");
+      profiler.writeData(new OutputStreamWriter(System.out));
+    }else {
+      /*Writer writer = new OutputStreamWriter(System.out);
+      resultWriter.write(writer);
+      writer.flush();*/
+      Path outPath = Path.of(config.getProfileOutputPath());
+      System.out.println("\nProfiler written to " + outPath);
+      profiler.writeData(outPath);
+    }
   }
 
   public static void main(String[] args) throws Exception {

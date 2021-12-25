@@ -31,15 +31,16 @@ public final class ConfigurationLoader {
    *
    * @return the loaded {@link CrawlerConfiguration}.
    */
-  @JsonDeserialize( builder = CrawlerConfiguration.Builder.class )//++++++
+  @JsonDeserialize( builder = CrawlerConfiguration.Builder.class )
   public CrawlerConfiguration load() {
     // TODO: Fill in this method.
-    try (Reader reader = Files.newBufferedReader(path,StandardCharsets.UTF_8)){//+++++++
-      return this.read(reader);
+    try (Reader reader = Files.newBufferedReader(path,StandardCharsets.UTF_8)){
+      return read(reader);
     }catch (IOException e){
       e.printStackTrace();
+      return null;
     }
-    return new CrawlerConfiguration.Builder().build();
+    //return new CrawlerConfiguration.Builder().build();
   }
 
   /**
