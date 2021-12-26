@@ -40,7 +40,6 @@ public final class ConfigurationLoader {
       e.printStackTrace();
       return null;
     }
-    //return new CrawlerConfiguration.Builder().build();
   }
 
   /**
@@ -62,11 +61,6 @@ public final class ConfigurationLoader {
       e.printStackTrace();
       return null;
     }
-
-
     // TODO: Fill in this method
-
-    /*return new CrawlerConfiguration.Builder().build();*/
-
   }
 }

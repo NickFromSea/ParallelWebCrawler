@@ -49,16 +49,10 @@ final class ProfilerImpl implements Profiler {
   public <T> T wrap(Class<T> klass, T delegate) {
     Objects.requireNonNull(klass);
     if (!classProf(klass)){
-      throw new IllegalArgumentException("Method not found");
+      throw new IllegalArgumentException("No profiled method found in the class");
     }
     InvocationHandler invocationHandler = new ProfilingMethodInterceptor(clock,delegate,state);
     Object proxyDeleg = Proxy.newProxyInstance(klass.getClassLoader(),new Class[]{klass},invocationHandler);
-    /*if (Arrays.stream(klass.getMethods()).noneMatch(method -> method.isAnnotationPresent(Profiled.class))){
-      throw new IllegalArgumentException(klass.getName()+" error");
-    }
-    ProfilingMethodInterceptor profilingMethodInterceptor = new ProfilingMethodInterceptor(clock,delegate,state,startTime);
-    Object proxyDeleg = (T) Proxy.newProxyInstance(klass.getClassLoader(),new Class[]{klass}, profilingMethodInterceptor);*/
-
     // TODO: Use a dynamic proxy (java.lang.reflect.Proxy) to "wrap" the delegate in a
     //       ProfilingMethodInterceptor and return a dynamic proxy from this method.
     //       See https://docs.oracle.com/javase/10/docs/api/java/lang/reflect/Proxy.html.
@@ -73,7 +67,7 @@ final class ProfilerImpl implements Profiler {
     Objects.requireNonNull(path);
     try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE,StandardOpenOption.APPEND)){
       writeData(writer);
-      //writer.flush();
+      writer.flush();
     } catch (IOException e) {
       e.printStackTrace();
     }

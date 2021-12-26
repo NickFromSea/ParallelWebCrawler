@@ -11,6 +11,7 @@ Q1. Run the web crawler using the configurations located at src/main/config/writ
 
     Why did the parser take more time when run with ParallelWebCrawler?
 
+    ANSWER: ParallelWebCrawler parser do it much more compared SequentialWebCrawler. Profiler collect up the time taken by all threads to parse.
 
 Q2. Your manager ran your crawler on her old personal computer, using the configurations from Q1, and she notices that
     the sequential crawler actually outperforms the parallel crawler. She would like to know why.
@@ -18,15 +19,25 @@ Q2. Your manager ran your crawler on her old personal computer, using the config
     (a) Suggest one reason why the sequential web crawler was able to read more web pages than the parallel crawler.
         (Hint: Try setting "parallelism" to 1 in the JSON configs to simulate your manager's computer.)
 
+        ANSWER: An old computer cannot effectively use a parallel crawler. Let's assume that the computer has a single core processor.
+                Hence the idea of multithreading does not work.
+
     (b) Suggest one scenario in which the parallel web crawler will almost certainly perform better than the sequential
         crawler. Why will it perform better?
+
+        ANSWER: If the computer has a processor with multiple cores, then parallel web crawler will be much more efficient than sequential.
+                The more cores, the faster the parallel web crawler will work.
 
 
 Q3. Analyze your method profiler through the lens of Aspect Oriented Programming, by answering the following questions:
 
     (a) What cross-cutting concern is being addressed by the com.udacity.webcrawler.profiler.Profiler class?
 
+    ANSWER: Time performance measurement
+
     (b) What are the join points of the Profiler in the web crawler program?
+
+    ANSWER: Methods that are annotated with @Profiled
 
 
 Q4. Identify three (3) different design patterns used in this project, and explain which interfaces, classes, and/or
@@ -34,5 +45,18 @@ Q4. Identify three (3) different design patterns used in this project, and expla
 
     For each pattern, name one thing about the pattern that you LIKED, and one thing you DISLIKED. If you did not like
     anything, you can name two things you disliked.
+
+    ANSWER:
+    1. Builder (CrawlResult, CrawlerConfiguration)
+    + Code looks much more readable; when filling in the object fields, it is now difficult to confuse the parameters
+    - More coding
+
+    2. Singelton (WebcrawlerModule)
+    + Ensures that the class has only one instance of the class
+    - Complexity and poor readability of the code.
+
+    3. Dependency Injection (WebCrawlerMain)
+    + No need to manually create every dependency
+    - More classes and interfaces required
 
 
